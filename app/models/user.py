@@ -15,6 +15,13 @@ class User(UserMixin, db.Model):
     address = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    def __init__(self, names, email, password, role, address=None):
+        self.names = names
+        self.email = email
+        self.password_hash = generate_password_hash(password)
+        self.role = role
+        self.address = address
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 

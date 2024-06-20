@@ -1,14 +1,18 @@
 from flask import Flask
 from flask_login import LoginManager
 
+from app.models import db
 from app.models.user import User
-from .models import db
 
 login_manager = LoginManager()
 
 
-def create_app():
+def create_app(config_name=None):
     app = Flask(__name__)
+
+    if config_name:
+        app.config.from_object(config_name)
+
     app.config["SQLALCHEMY_DATABASE_URI"] = (
         "mysql+pymysql://paci:Gihanga51@localhost/smart_waste_management"
     )
