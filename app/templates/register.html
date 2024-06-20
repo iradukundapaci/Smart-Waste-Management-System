@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - Smart Waste Management System</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <h1>Register</h1>
+    </header>
+    <nav>
+      <button class="nav-toggle" aria-label="Toggle navigation">
+        <span class="hamburger"></span>
+      </button>
+      <ul class="nav-menu">
+        <li><a href="{{ url_for('main.index') }}">Home</a></li>
+        <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+        <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+      </ul>
+    </nav>
+    <main>
+      <section id="register-section">
+        <h2>Create a New Account</h2>
+        <form method="POST" action="{{ url_for('auth.register') }}">
+          {{ form.hidden_tag() }}
+          <label for="names">Names:</label>
+          {{ form.names(id='names') }}
+          <label for="email">Email:</label>
+          {{ form.email(id='email') }}
+          <label for="password">Password:</label>
+          {{ form.password(id='password') }}
+          <label for="address">Address:</label>
+          {{ form.address(id='address') }} {{ form.submit() }}
+        </form>
+      </section>
+    </main>
+    <footer>&copy; 2024 Smart Waste Management System</footer>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>
