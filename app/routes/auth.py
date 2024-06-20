@@ -16,7 +16,14 @@ def login():
         if user and check_password_hash(user.password_hash, form.password.data):
             login_user(user)
             flash("Login successful!", "success")
-            return redirect(url_for("user.schedule"))  # Adjust the redirect as needed
+            if user.role == "admin":
+                return redirect(url_for("admin.index"))
+            elif user.role == "house-hold":
+                return redirect(url_for("user.schedule"))
+            elif user.role == "service-man":
+                return redirect(url_for("service.view_collections"))
+            else:
+                flash("Invalid role", "danger")
         flash("Invalid email or password", "danger")
     return render_template("login.html", form=form)
 
@@ -31,7 +38,9 @@ def register():
             email=form.email.data,
             password_hash=hashed_password,
             address=form.address.data,
+            role=form.role.data,
         )
+        print(form.role.data)
         db.session.add(new_user)
         db.session.commit()
         flash("Registration successful! Please log in.", "success")

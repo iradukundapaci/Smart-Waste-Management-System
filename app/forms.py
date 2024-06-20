@@ -1,13 +1,24 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email
+from wtforms import FloatField, SelectField, StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired, Email, EqualTo
 
 
 class RegistrationForm(FlaskForm):
-    names = StringField("names", validators=[DataRequired()])
+    names = StringField("Names", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
+    confirm_password = PasswordField(
+        "Confirm Password", validators=[DataRequired(), EqualTo("password")]
+    )
     address = StringField("Address", validators=[DataRequired()])
+    role = SelectField(
+        "Role",
+        choices=[
+            ("house-hold", "House Hold"),
+            ("service-man", "Service Man"),
+        ],
+        validators=[DataRequired()],
+    )
     submit = SubmitField("Register")
 
 
@@ -36,3 +47,10 @@ class ScheduleForm(FlaskForm):
 
 class GenerateCollectionsForm(FlaskForm):
     submit = SubmitField("Generate Upcoming Collections")
+
+
+class CollectionForm(FlaskForm):
+    material = StringField("Material", validators=[DataRequired()])
+    quantity = FloatField("Quantity", validators=[DataRequired()])
+    waste_category = StringField("Waste Category", validators=[DataRequired()])
+    submit = SubmitField("Submit")

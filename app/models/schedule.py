@@ -22,7 +22,7 @@ class UpcomingCollection(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     collection_date = db.Column(db.Date, nullable=False)
-    status = db.Column(db.String(10), nullable=False, default="SCHEDULED")
+    status = db.Column(db.String(10), nullable=False, default="Pending")
     created_at = db.Column(db.Date, default=date.today)
 
     user = db.relationship(

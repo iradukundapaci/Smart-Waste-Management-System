@@ -1,3 +1,4 @@
+from sqlite3 import IntegrityError
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 from datetime import datetime, timedelta
@@ -42,23 +43,45 @@ def schedule():
     )
 
 
+def next_weekday(d, weekday):
+    """Given a start date `d`, returns the next date of the given weekday"""
+    days_ahead = weekday - d.weekday()
+    if days_ahead <= 0:  # Target day already happened this week
+        days_ahead += 7
+    return d + timedelta(days_ahead)
+
+
 @user_bp.route("/schedule/generate", methods=["POST"])
 @login_required
 def generate_collections():
     schedules = Schedule.query.filter_by(user_id=current_user.id).all()
+    generated_collections = []
+
     for schedule in schedules:
-        next_date = next_weekday(datetime.now(), schedule.day_of_week)
+        next_date = next_weekday(datetime.now(), schedule.day_of_week).date()
+        print(f"Next date for schedule {schedule.id}: {next_date}")
+
         existing_collection = UpcomingCollection.query.filter_by(
-            user_id=current_user.id, collection_date=next_date
+            user_id=current_user.id
         ).first()
+
         if not existing_collection:
             collection = UpcomingCollection(
                 user_id=current_user.id, collection_date=next_date
             )
-            db.session.add(collection)
+            generated_collections.append(collection)
 
-    db.session.commit()
-    flash("Upcoming collections generated successfully.", "success")
+    if generated_collections:
+        db.session.add_all(generated_collections)
+        try:
+            db.session.commit()
+            flash("Upcoming collections generated successfully.", "success")
+        except IntegrityError:
+            db.session.rollback()
+            flash("Failed to generate collections due to a database error.", "danger")
+    else:
+        flash("All collections have already been generated.", "info")
+
     return redirect(url_for("user.schedule"))
 
 
@@ -93,7 +116,7 @@ def delete_schedule(schedule_id):
     return redirect(url_for("user.schedule"))
 
 
-@user_bp.route("/collection/<int:collection_id>/delete", methods=["POST"])
+@user_bp.route("/collection/<int:collection_id>/delete", methods=["Get"])
 @login_required
 def delete_collection(collection_id):
     collection = UpcomingCollection.query.get_or_404(collection_id)

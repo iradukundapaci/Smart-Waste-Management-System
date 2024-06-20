@@ -1,48 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Schedule - Smart Waste Management System</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='styles.css') }}"
-    />
-  </head>
-  <body>
-    <header>
-      <h1>Edit Schedule</h1>
-    </header>
-    <nav>
-      <button class="nav-toggle" aria-label="Toggle navigation">
-        <span class="hamburger"></span>
-      </button>
-      <ul class="nav-menu">
-        <li><a href="{{ url_for('main.index') }}">Home</a></li>
-        <li>
-          <a href="{{ url_for('user.schedule') }}">Waste Collection Schedule</a>
-        </li>
-        <li><a>Recycling Tracker</a></li>
-        <li><a>Admin Dashboard</a></li>
-        <li><a href="{{ url_for('auth.register') }}">Register</a></li>
-        <li><a href="{{ url_for('auth.login') }}">Login</a></li>
-      </ul>
-    </nav>
-    <main>
-      <section id="edit-schedule">
-        <h2>Edit Schedule</h2>
-        <form
-          id="edit-schedule-form"
-          method="post"
-          action="{{ url_for('user.edit_schedule', schedule_id=schedule.id) }}"
-        >
-          {{ form.hidden_tag() }}
-          <div>{{ form.day_of_week.label }} {{ form.day_of_week() }}</div>
-          <button type="submit">{{ form.submit.label }}</button>
-        </form>
-      </section>
-    </main>
-    <footer>&copy; 2024 Smart Waste Management System</footer>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-  </body>
-</html>
+{% extends "base.html" %} {% block title %}Edit Schedule - Smart Waste
+Management System{% endblock %} {% block content %}
+<section id="edit-schedule">
+  <h2>Edit Schedule</h2>
+  <form
+    id="edit-schedule-form"
+    method="post"
+    action="{{ url_for('user.edit_schedule', schedule_id=schedule.id) }}"
+  >
+    {{ form.hidden_tag() }}
+    <div>{{ form.day_of_week.label }} {{ form.day_of_week() }}</div>
+    <button type="submit">{{ form.submit.label }}</button>
+  </form>
+</section>
+{% endblock %}
