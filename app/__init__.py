@@ -1,23 +1,30 @@
+# app/__init__.py
+
 from flask import Flask
 from flask_login import LoginManager
-
 from app.models import db
 from app.models.user import User
+from dotenv import load_dotenv
+import os
 
 login_manager = LoginManager()
 
 
-def create_app(config_name=None):
+def create_app(config_name=None, config_obj=None):
     app = Flask(__name__)
 
-    if config_name:
-        app.config.from_object(config_name)
+    # Load environment variables from .env file
+    load_dotenv()
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = (
-        "mysql+pymysql://paci:Gihanga51@localhost/smart_waste_management"
-    )
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["SECRET_KEY"] = "secret_key"
+    if config_name == "testing":
+        app.config.from_object(config_obj)
+    else:
+        # Load configuration from environment variables
+        app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI")
+        app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = (
+            os.getenv("SQLALCHEMY_TRACK_MODIFICATIONS") == "True"
+        )
+        app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
     db.init_app(app)
     login_manager.init_app(app)
