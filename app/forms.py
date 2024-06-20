@@ -16,6 +16,7 @@ class RegistrationForm(FlaskForm):
         choices=[
             ("house-hold", "House Hold"),
             ("service-man", "Service Man"),
+            ("admin", "Admin"),
         ],
         validators=[DataRequired()],
     )
