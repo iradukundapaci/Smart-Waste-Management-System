@@ -23,6 +23,23 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField("Register")
 
 
+class UserForm(FlaskForm):
+    names = StringField("Names", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    role = SelectField(
+        "Role",
+        choices=[
+            ("house-hold", "House Hold"),
+            ("service-man", "Service Man"),
+            ("admin", "Admin"),
+        ],
+        validators=[DataRequired()],
+    )
+    address = StringField("Address", validators=[DataRequired()])
+    submit = SubmitField("Add User")
+
+
 class LoginForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
