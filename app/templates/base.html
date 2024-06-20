@@ -33,17 +33,6 @@
             >View Collections</a
           >
         </li>
-        {% else %}
-        <li>
-          <a href="{{ url_for('user.profile', user_id=current_user.id) }}"
-            >Profile</a
-          >
-        </li>
-        <li>
-          <a href="{{ url_for('user.schedules', user_id=current_user.id) }}"
-            >My Schedules</a
-          >
-        </li>
         {% endif %}
         <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
         {% else %}
