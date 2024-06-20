@@ -1,11 +1,10 @@
-# admin.py (Blueprint)
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required
 from app.decorators.decorators import role_required
 from app.models.user import User
 from app.models.db import db
-from app.forms import UserForm, CollectionForm
 from app.models import UpcomingCollection, RecyclingTracker
+from app.forms import RegistrationForm as UserForm
 
 admin_bp = Blueprint("admin", __name__)
 
@@ -55,7 +54,7 @@ def edit_user(user_id):
     return render_template("admin/edit_user.html", form=form, user=user)
 
 
-@admin_bp.route("/users/delete/<int:user_id>", methods=["POST"])
+@admin_bp.route("/users/delete/<int:user_id>", methods=["GET"])
 @login_required
 @role_required("admin")
 def delete_user(user_id):
@@ -70,18 +69,28 @@ def delete_user(user_id):
 @login_required
 @role_required("admin")
 def view_analytics():
-    total_waste_collected = db.session.query(
-        db.func.sum(RecyclingTracker.quantity)
-    ).scalar()
+    total_waste_collected = (
+        db.session.query(db.func.sum(RecyclingTracker.quantity)).scalar() or 0
+    )
     total_completed_schedules = UpcomingCollection.query.filter_by(
         status="Completed"
     ).count()
     total_cancelled_schedules = UpcomingCollection.query.filter_by(
         status="Cancelled"
     ).count()
+    total_users = User.query.count()
+    average_impact_score = (
+        db.session.query(db.func.avg(RecyclingTracker.impact_score)).scalar() or 0
+    )
+    average_impact_score = round(average_impact_score, 2)
+    tracks = RecyclingTracker.query.all()
+
     return render_template(
         "admin/analytics.html",
         total_waste_collected=total_waste_collected,
         total_completed_schedules=total_completed_schedules,
         total_cancelled_schedules=total_cancelled_schedules,
+        total_users=total_users,
+        average_impact_score=average_impact_score,
+        tracks=tracks,
     )

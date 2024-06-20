@@ -1,3 +1,4 @@
+<!-- admin/analytics.html -->
 {% extends "base.html" %} {% block content %}
 <h2>Analytics</h2>
 
@@ -5,7 +6,6 @@
   <div class="card">
     <div class="card-icon">
       <i class="fas fa-weight"></i>
-      <!-- Font Awesome icon for weight -->
     </div>
     <h3>Total Waste Collected</h3>
     <p>{{ total_waste_collected }} kg</p>
@@ -13,7 +13,6 @@
   <div class="card">
     <div class="card-icon">
       <i class="fas fa-check-circle"></i>
-      <!-- Font Awesome icon for completed -->
     </div>
     <h3>Total Completed Schedules</h3>
     <p>{{ total_completed_schedules }}</p>
@@ -21,10 +20,23 @@
   <div class="card">
     <div class="card-icon">
       <i class="fas fa-times-circle"></i>
-      <!-- Font Awesome icon for cancelled -->
     </div>
     <h3>Total Cancelled Schedules</h3>
     <p>{{ total_cancelled_schedules }}</p>
+  </div>
+  <div class="card">
+    <div class="card-icon">
+      <i class="fas fa-users"></i>
+    </div>
+    <h3>Total Users</h3>
+    <p>{{ total_users }}</p>
+  </div>
+  <div class="card">
+    <div class="card-icon">
+      <i class="fas fa-chart-line"></i>
+    </div>
+    <h3>Average Impact Score</h3>
+    <p>{{ average_impact_score }}</p>
   </div>
 </div>
 

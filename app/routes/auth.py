@@ -17,7 +17,7 @@ def login():
             login_user(user)
             flash("Login successful!", "success")
             if user.role == "admin":
-                return redirect(url_for("admin.index"))
+                return redirect(url_for("admin.view_analytics"))
             elif user.role == "house-hold":
                 return redirect(url_for("user.schedule"))
             elif user.role == "service-man":

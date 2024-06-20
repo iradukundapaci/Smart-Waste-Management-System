@@ -23,15 +23,28 @@
       </button>
       <ul class="nav-menu">
         <li><a href="{{ url_for('main.index') }}">Home</a></li>
-        {% if current_user.is_authenticated %}
-        <li>
-          <a href="{{ url_for('user.schedule') }}">Waste Collection Schedule</a>
-        </li>
+        {% if current_user.is_authenticated %} {% if current_user.role ==
+        'admin' %}
+        <li><a href="{{ url_for('admin.view_users') }}">Manage Users</a></li>
+        <li><a href="{{ url_for('admin.view_analytics') }}">Analytics</a></li>
+        {% elif current_user.role == 'service-man' %}
         <li>
           <a href="{{ url_for('service.view_collections') }}"
             >View Collections</a
           >
         </li>
+        {% else %}
+        <li>
+          <a href="{{ url_for('user.profile', user_id=current_user.id) }}"
+            >Profile</a
+          >
+        </li>
+        <li>
+          <a href="{{ url_for('user.schedules', user_id=current_user.id) }}"
+            >My Schedules</a
+          >
+        </li>
+        {% endif %}
         <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
         {% else %}
         <li><a href="{{ url_for('auth.register') }}">Register</a></li>

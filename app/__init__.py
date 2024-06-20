@@ -31,10 +31,12 @@ def create_app():
         from .routes.main import main_bp
         from .routes.user import user_bp
         from .routes.services import service_bp
+        from .routes.admin import admin_bp
 
         app.register_blueprint(main_bp)
         app.register_blueprint(user_bp, url_prefix="/user")
         app.register_blueprint(auth_bp, url_prefix="/auth")
         app.register_blueprint(service_bp, url_prefix="/service")
+        app.register_blueprint(admin_bp, url_prefix="/admin")
 
     return app
