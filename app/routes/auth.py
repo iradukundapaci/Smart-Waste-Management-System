@@ -40,7 +40,6 @@ def register():
             address=form.address.data,
             role=form.role.data,
         )
-        print(form.role.data)
         db.session.add(new_user)
         db.session.commit()
         flash("Registration successful! Please log in.", "success")
