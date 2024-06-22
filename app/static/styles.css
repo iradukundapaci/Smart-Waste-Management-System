@@ -205,6 +205,16 @@ footer {
   color: #4caf50; /* Adjust the color as needed */
 }
 
+#home {
+  background-image: url('../static/1.jpg');
+  background-size: cover; /* Ensure the image covers the entire background */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+  padding: 5em 1em; /* Add some padding to the section */
+  color: white; /* Ensure text is readable on the background */
+  text-align: center;
+}
+
 .actions {
   margin-bottom: 20px;
 }
